@@ -5,8 +5,8 @@ clean:
   @rm -f*/version.txt
   @rm -f .coverage
   @rm -f*/.ipynb_checkpoints
-  @rm -rf build
+  @rm RF build
   @rm -Rf */ pycache
-  @rm -Rf *.pyc
+  @rm -Rf /.pyc
 
 all: install clean
