@@ -1,4 +1,8 @@
+.gitignore
+
 .env
 build/
 *.egg-info/
 data/*
+__pycache__/
+*.pyc
