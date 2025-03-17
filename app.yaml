@@ -8,8 +8,8 @@ automatic_scaling:
   max_instances: 5
 
 env_variables:
-  MODEL_TEXT_PATH: "/home/romaric/code/Romaric1209/project-roma/notebooks/roma_models/baseline_model.keras"
-  MODEL_IMG_PATH: "/home/romaric/code/Romaric1209/project-roma/notebooks/roma_models/baseline_image.keras"
+  MODEL_TEXT_PATH: "/home/romaric/code/Romaric1209/GAIDI/notebooks/roma_models/baseline_model.keras"
+  MODEL_IMG_PATH: "/home/romaric/code/Romaric1209/GAIDI/notebooks/roma_models/baseline_image.keras"
 
 handlers:
 - url: /.*
