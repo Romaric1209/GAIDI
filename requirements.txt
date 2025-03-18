@@ -10,7 +10,7 @@ scikit-learn==1.6.1
 flask==2.2.2
 # API
 fastapi         # API framework
-pytz            # time zone management
+
 uvicorn         # web server
 # tests
 httpx           # HTTP client
