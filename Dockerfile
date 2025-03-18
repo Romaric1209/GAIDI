@@ -5,7 +5,8 @@ FROM python:3.10.6-buster
 WORKDIR /app
 
 # Copy project files to the container
-COPY . /app  # This copies everything from the current directory to /app in the container
+COPY . /app
+# ^^^ This copies everything from the current directory to /app in the container
 
 # Install dependencies
 RUN pip install --no-cache-dir --upgrade pip
