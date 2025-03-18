@@ -9,4 +9,4 @@ def read_root():
 
 @app.get("/predict")
 def predict():
-    return {"message": "Hello"}
+    return {"message": "Bye"}
