@@ -3,8 +3,11 @@ import numpy as np
 import string
 import joblib
 import re
+import textstat
 import nltk
-nltk.data.path.append("/home/romaric/code/nghia95/fake-data-detector/notebooks/roma_NTLK_Data_Cache")
+nltk_data_path = "/home/romaric/code/Romaric1209/GAIDI/notebooks/roma_NTLK_Data_Cache"
+nltk.data.path.append(nltk_data_path)
+#nltk.download('cmudict', download_dir=nltk_data_path)
 from nltk.corpus import cmudict
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
@@ -14,7 +17,6 @@ from textblob import TextBlob
 from gensim.models import LsiModel
 from gensim import corpora
 from gensim.models.coherencemodel import CoherenceModel
-import textstat
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.preprocessing import MinMaxScaler, FunctionTransformer
@@ -331,4 +333,4 @@ feature_names = [
     "word_count", "reading_ease", "gunning_fog"
 ]
 
-# joblib.dump(pipeline, "roma_pipeline.joblib")
+#joblib.dump(pipeline, "roma_pipeline.joblib")
