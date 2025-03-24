@@ -10,7 +10,7 @@ app = FastAPI()
 
 #Load the text model
 text_preprocessing = joblib.load("notebooks/roma_pipeline.joblib")
-model_texts = tf.keras.models.load_model("notebooks/roma_models/baseline_model.keras")
+model_texts = joblib.load("notebooks/roma_models/adaboost_model_text.joblib")
 
 #Load the image model
 model_images = tf.keras.models.load_model("notebooks/roma_models/baseline_image.keras")
