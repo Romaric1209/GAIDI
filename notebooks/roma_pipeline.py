@@ -7,7 +7,6 @@ import textstat
 import nltk
 nltk_data_path = "/home/romaric/code/Romaric1209/GAIDI/notebooks/roma_NTLK_Data_Cache"
 nltk.data.path.append(nltk_data_path)
-#nltk.download('cmudict', download_dir=nltk_data_path)
 from nltk.corpus import cmudict
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
@@ -20,6 +19,7 @@ from gensim.models.coherencemodel import CoherenceModel
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.preprocessing import MinMaxScaler, FunctionTransformer
+
 
 cmu_dict = cmudict.dict()
 
@@ -333,4 +333,4 @@ feature_names = [
     "word_count", "reading_ease", "gunning_fog"
 ]
 
-#joblib.dump(pipeline, "roma_pipeline.joblib")
+joblib.dump(pipeline, "roma_pipeline.joblib")
