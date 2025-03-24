@@ -6,4 +6,7 @@ build/
 data/*
 __pycache__/
 *.pyc
+romapp
+
 .python-version
+notebooks/roma_NTLK_Data_Cache/
