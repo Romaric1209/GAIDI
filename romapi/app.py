@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from romapp.api.fast import app as api_app
+from romapi.fast import app as api_app
 
 app = FastAPI()
 
