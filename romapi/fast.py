@@ -31,8 +31,8 @@ def predict_text(input_data:TextInput):
         preprocessed_input = text_preprocessing.transform([input_data.text])
         predict = model_texts.predict(preprocessed_input)
 
-        label = "YOU WROTE IT!" if predict > 0.5 else "GENAI WROTE THAT TEXT!"
-        return {"prediction": label, "confidence": round(float(predict[0][0]), 2)} if predict > 0.5 else {"prediction": label, "confidence": round(float(1-predict[0][0]), 2)}
+        label = "YOU WROTE IT!" if predict < 0.5 else "GENAI WROTE THAT TEXT!"
+        return {"prediction": label, "confidence": round(float(1-predict[0][0]), 2)} if predict < 0.5 else {"prediction": label, "confidence": round(float(predict[0][0]), 2)}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -48,7 +48,7 @@ async def predict_image(file: UploadFile= File(...)):
 
         predict = model_images.predict(image_array)
 
-        label = "THAT IS A REAL IMAGE!" if predict > 0.5 else "THIS IS AN AI GENERATED IMAGE!"
-        return {"prediction": label, "confidence": round(float(predict[0][0]), 2)} if predict > 0.5 else {"prediction": label, "confidence": round(float(1-predict[0][0]), 2)}
+        label = "THAT IS A REAL IMAGE!" if predict < 0.5 else "THIS IS AN AI GENERATED IMAGE!"
+        return {"prediction": label, "confidence": round(float(1-predict[0][0]), 2)} if predict < 0.5 else {"prediction": label, "confidence": round(float(predict[0][0]), 2)}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
