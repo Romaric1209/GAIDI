@@ -9,4 +9,4 @@ RUN pip install -r /app/requirements.txt
 
 EXPOSE 8000
 
-CMD ["uvicorn", "romapp.api.app:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "romapi.fast:app", "--host", "0.0.0.0", "--port", "8000"]
