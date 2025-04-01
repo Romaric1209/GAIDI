@@ -14,11 +14,11 @@ from PIL import Image
 app = FastAPI()
 
 #Load the text model
-text_preprocessing = joblib.load("notebooks/pipeline.joblib")
-model_texts = joblib.load("notebooks/roma_models/XGBoost_model.joblib")
+text_preprocessing = joblib.load("roma_models/pipeline.joblib")
+model_texts = joblib.load("roma_models/XGBoost_model.joblib")
 
 #Load the image model
-model_images = tf.keras.models.load_model("notebooks/roma_models/image_model.keras")
+model_images = tf.keras.models.load_model("roma_models/image_model.keras")
 
 #Define request for text input
 class TextInput(BaseModel):
