@@ -1,3 +1,5 @@
+import uvicorn
+import os
 from fastapi import FastAPI, HTTPException, File, UploadFile
 from notebooks.transformers import (
     InputHandler, HowManyWords, TextPreprocessor, ConsDensity, Stress, Sentiment, Redundance,
@@ -69,17 +71,20 @@ async def predict_image(file: UploadFile = File(...)):
         image = Image.open(BytesIO(contents)).convert('RGB').resize((32, 32))
         image_array = np.array(image)  # No normalization (handled by Rescaling layer)
         image_batch = np.expand_dims(image_array, axis=0)
-        
+
         prediction = model_images.predict(image_batch)
         confidence = float(prediction[0][0])
-        
+
         # Corrected labels
         label = "REAL" if confidence >= 0.5 else "AI GENERATED"                 # Image DATA => 0 : FAKE    1
         confidence_score = confidence if label == "REAL" else 1 - confidence
-        
+
         return {
             "prediction": label,
             "confidence": round(confidence_score, 2)
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("PORT", "8080")))
