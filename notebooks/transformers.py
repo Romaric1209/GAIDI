@@ -1,10 +1,19 @@
-from sklearn.base import BaseEstimator, TransformerMixin
 import pandas as pd
-
+import numpy as np
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.feature_extraction.text import TfidfVectorizer
+from notebooks.functions import (
+    word_count, basic_cleaning, cons_density, get_sentence_stress, redundance,
+    sentiment_polarity, word_choice, coherence, reading_ease, gunning_fog
+)
 
 
 class InputHandler(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        self.is_fitted_ = False
+
     def fit(self, X, y=None):
+        self.is_fitted_ = True
         return self
 
     def transform(self, X):
@@ -20,7 +29,11 @@ class InputHandler(BaseEstimator, TransformerMixin):
         return X
 
 class HowManyWords(BaseEstimator, TransformerMixin):
-    def fit(self,X,y=None):
+    def __init__(self):
+        self.is_fitted_ = False
+
+    def fit(self, X, y=None):
+        self.is_fitted_ = True
         return self
 
     def get_feature_names_out(self, input_features=None):
@@ -30,83 +43,139 @@ class HowManyWords(BaseEstimator, TransformerMixin):
         if isinstance(X, pd.DataFrame):
             X = X["text"]
         word_c = X.apply(word_count)
-        return pd.DataFrame({"word_count": word_c})
+        return word_c.values.reshape(-1, 1)
 
 class TextPreprocessor(BaseEstimator, TransformerMixin):
-    def fit(self, X, y=None):
-        return self
+    def __init__(self):
+        self.is_fitted_ = False
 
-    def get_feature_names_out(self, input_features=None):
-        return ["preprocessed"]
+    def fit(self, X, y=None):
+        self.is_fitted_ = True
+        return self
 
     def transform(self, X):
         if isinstance(X, pd.DataFrame):
-            X = X["text"]
-        cleaned = X.apply(basic_cleaning)
+            texts = X["text"]
+        else:
+            texts = X
+
+        cleaned = texts.apply(basic_cleaning)
         return pd.DataFrame({"preprocessed": cleaned})
 
 class ConsDensity(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        self.is_fitted_ = False
+
     def fit(self, X, y=None):
+        self.is_fitted_ = True
         return self
+
+    def transform(self, X):
+        if isinstance(X, pd.DataFrame):
+            texts = X["preprocessed"]
+        else:
+            raise ValueError("Input must be a DataFrame with 'preprocessed' column")
+        return texts.apply(cons_density).values.reshape(-1, 1)
 
     def get_feature_names_out(self, input_features=None):
         return ["cons_density"]
 
-    def transform(self, X):
-        return X["preprocessed"].apply(cons_density).values.reshape(-1, 1)
-
 class Stress(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        self.is_fitted_ = False
+
     def fit(self, X, y=None):
+        self.is_fitted_ = True
         return self
+
+    def transform(self, X):
+        stress_scores = X["preprocessed"].apply(get_sentence_stress)
+        return stress_scores.values.reshape(-1, 1)
 
     def get_feature_names_out(self, input_features=None):
         return ["stress_value"]
 
-    def transform(self, X):
-        return X["preprocessed"].apply(get_sentence_stress).values.reshape(-1, 1)
-
 class Sentiment(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        self.is_fitted_ = False
+
     def fit(self, X, y=None):
+        self.is_fitted_ = True
         return self
+
+    def transform(self, X):
+        if isinstance(X, pd.DataFrame):
+            texts = X["preprocessed"]
+        else:
+            raise ValueError("Input must be a DataFrame with 'preprocessed' column")
+        return texts.apply(sentiment_polarity).values.reshape(-1, 1)
 
     def get_feature_names_out(self, input_features=None):
         return ["sentiment_score"]
 
-    def transform(self, X):
-        return X["preprocessed"].apply(sentiment_polarity).values.reshape(-1, 1)
 
 class Redundance(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        self.is_fitted_ = False
+
     def fit(self, X, y=None):
+        self.is_fitted_ = True
         return self
+
+    def transform(self, X):
+        if isinstance(X, pd.DataFrame):
+            texts = X["preprocessed"]
+        else:
+            raise ValueError("Input must be a DataFrame with 'preprocessed' column")
+        return texts.apply(redundance).values.reshape(-1, 1)
 
     def get_feature_names_out(self, input_features=None):
         return ["redundance"]
 
-    def transform(self, X):
-        return X["preprocessed"].apply(redundance).values.reshape(-1, 1)
 
 class UnusualWord(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        self.is_fitted_ = False
+
     def fit(self, X, y=None):
+        self.is_fitted_ = True
         return self
+
+    def transform(self, X):
+        if isinstance(X, pd.DataFrame):
+            texts = X["preprocessed"]
+        else:
+            raise ValueError("Input must be a DataFrame with 'preprocessed' column")
+        return texts.apply(word_choice).values.reshape(-1, 1)
 
     def get_feature_names_out(self, input_features=None):
         return ["unusual_words"]
 
-    def transform(self, X):
-        return X["preprocessed"].apply(word_choice).values.reshape(-1, 1)
 
 class Coherence(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        self.is_fitted_ = False
+
     def fit(self, X, y=None):
+        self.is_fitted_ = True
         return self
+
+    def transform(self, X):
+        if isinstance(X, pd.DataFrame):
+            texts = X["preprocessed"]
+        else:
+            raise ValueError("Input must be a DataFrame with 'preprocessed' column")
+        return texts.apply(coherence).values.reshape(-1, 1)
 
     def get_feature_names_out(self, input_features=None):
         return ["coherence"]
 
-    def transform(self, X):
-        return X["preprocessed"].apply(coherence).values.reshape(-1, 1)
-
 class ReadingEase(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        self.is_fitted_ = False
+
     def fit(self, X, y=None):
+        self.is_fitted_ = True
         return self
 
     def get_feature_names_out(self, input_features=None):
@@ -116,7 +185,11 @@ class ReadingEase(BaseEstimator, TransformerMixin):
         return X["text"].apply(reading_ease).values.reshape(-1, 1)
 
 class GunningFog(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        self.is_fitted_ = False
+
     def fit(self, X, y=None):
+        self.is_fitted_ = True
         return self
 
     def get_feature_names_out(self, input_features=None):
@@ -127,10 +200,27 @@ class GunningFog(BaseEstimator, TransformerMixin):
 
 class LogTransform(BaseEstimator, TransformerMixin):
     def __init__(self):
-        pass
+        self.is_fitted_ = False
 
     def fit(self, X, y=None):
+        self.is_fitted_ = True
         return self
 
     def transform(self, X):
         return np.log1p(X)
+
+class Tfidf_Vectorizer(BaseEstimator, TransformerMixin):
+    def __init__(self, max_features=10000):
+        self.tfidf = TfidfVectorizer(max_features=max_features)
+        self.is_fitted_ = False
+
+    def fit(self, X, y=None):
+        self.tfidf.fit(X["preprocessed"])
+        self.is_fitted_ = True
+        return self
+
+    def transform(self, X):
+        return self.tfidf.transform(X["preprocessed"])
+
+    def get_feature_names_out(self, input_features=None):
+        return self.tfidf.get_feature_names_out()
