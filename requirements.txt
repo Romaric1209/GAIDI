@@ -16,6 +16,7 @@ xgboost==2.1.4
 fastapi==0.115.11         # API framework
 uvicorn==0.34.0        # web server
 python-multipart==0.0.20
+streamlit==1.44.1
 
 
 # tests

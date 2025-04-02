@@ -210,8 +210,10 @@ class LogTransform(BaseEstimator, TransformerMixin):
         return np.log1p(X)
 
 class Tfidf_Vectorizer(BaseEstimator, TransformerMixin):
-    def __init__(self, max_features=10000):
-        self.tfidf = TfidfVectorizer(max_features=max_features)
+    def __init__(self, ngram_range=(2, 3), max_features=10000):
+        self.ngram_range = ngram_range
+        self.max_features = max_features
+        self.tfidf = TfidfVectorizer(ngram_range=self.ngram_range, max_features=self.max_features)
         self.is_fitted_ = False
 
     def fit(self, X, y=None):
