@@ -36,8 +36,8 @@ def predict_text(input_data:TextInput):
         input_df = pd.DataFrame({"text": [input_data.text]})
         if input_df["text"].str.split().str.len().iloc[0] == 0:
             return {"error": "No text provided."}
-        if input_df["text"].str.split().str.len().iloc[0] < 25:
-            return {"YOU PROBABLY WROTE THAT"}
+        if input_df["text"].str.split().str.len().iloc[0] < 20:
+            return {"Warning: Text too short! You wrote it!"}
         else:
             preprocessed_input = text_preprocessing.transform(input_df)
             prediction = model_texts.predict_proba(preprocessed_input)
