@@ -3,7 +3,7 @@ import string
 import re
 import textstat
 import nltk
-nltk_data_path = "/home/romaric/code/Romaric1209/GAIDI/notebooks/roma_NTLK_Data_Cache"
+nltk_data_path = "/home/romaric/code/Romaric1209/GAIDI/notebooks/nltk_data"
 nltk.data.path.append(nltk_data_path)
 from nltk.corpus import cmudict
 from nltk.tokenize import word_tokenize

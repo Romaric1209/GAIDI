@@ -17,7 +17,7 @@ app = FastAPI()
 
 #Load the text model
 text_preprocessing = joblib.load("roma_models/pipeline.joblib")
-model_texts = joblib.load("roma_models/XGBoost_model.joblib")
+model_texts = joblib.load("roma_models/stacking_text_model.joblib")
 
 #Load the image model
 model_images = tf.keras.models.load_model("roma_models/image_model.keras")
@@ -36,7 +36,7 @@ def predict_text(input_data:TextInput):
         input_df = pd.DataFrame({"text": [input_data.text]})
         if input_df["text"].str.split().str.len().iloc[0] == 0:
             return {"error": "No text provided."}
-        if input_df["text"].str.split().str.len().iloc[0] < 20:
+        if input_df["text"].str.split().str.len().iloc[0] < 6:
             return {"Warning: Text too short! You wrote it!"}
         else:
             preprocessed_input = text_preprocessing.transform(input_df)
@@ -52,12 +52,12 @@ def predict_text(input_data:TextInput):
             else:
                 raise ValueError(f"Unexpected prediction shape: {prediction.shape}")
 
-            label = "YOU WROTE IT!" if pred_val < 0.5 else "GENAI WROTE THAT TEXT!"  # Text DATA => 0 : HUMAN   1 : AI Generated
+            label = "YOU WROTE IT!" if pred_val <= 0.5 else "GENAI WROTE THAT TEXT!"  # Text DATA => 0 : HUMAN   1 : AI Generated
 
-            if pred_val < 0.5:
+            if pred_val <= 0.5:
                 return {"prediction" : label, "confidence": f"{round(float(1-pred_val)*100, 2)}%"}
 
-            if pred_val>= 0.5:
+            if pred_val > 0.5:
                 return {"prediction" : label, "confidence" : f"{round(float(pred_val)*100, 2)}%"}
 
     except Exception as e:
@@ -75,7 +75,6 @@ async def predict_image(file: UploadFile = File(...)):
         prediction = model_images.predict(image_batch)
         confidence = float(prediction[0][0])
 
-        # Corrected labels
         label = "REAL" if confidence >= 0.5 else "AI GENERATED"                 # Image DATA => 0 : FAKE    1
         confidence_score = confidence if label == "REAL" else 1 - confidence
 
