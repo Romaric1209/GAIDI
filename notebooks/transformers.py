@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction.text import TfidfVectorizer
+from scipy.sparse import isspmatrix, csr_matrix
+from catboost import CatBoostClassifier
 from notebooks.functions import (
     word_count, basic_cleaning, cons_density, get_sentence_stress, redundance,
     sentiment_polarity, word_choice, coherence, reading_ease, gunning_fog
@@ -226,3 +228,14 @@ class Tfidf_Vectorizer(BaseEstimator, TransformerMixin):
 
     def get_feature_names_out(self, input_features=None):
         return self.tfidf.get_feature_names_out()
+
+
+class CatBoostSparseHandler(CatBoostClassifier):
+    def fit(self, X, y=None, **kwargs):
+        if isspmatrix(X):
+            X = csr_matrix(X)
+            X.data = np.copy(X.data)          
+            X.indices = np.copy(X.indices)    
+            X.indptr = np.copy(X.indptr)      
+            X._has_canonical_format = True    
+        return super().fit(X, y, **kwargs)

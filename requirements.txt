@@ -10,7 +10,9 @@ scikit-learn==1.6.1
 scipy==1.13.1
 Flask==2.2.5
 syllapy==0.7.2
-xgboost==2.1.4
+# xgboost==2.1.4
+catboost==1.2.7
+lightgbm==4.5.0
 
 # API
 fastapi==0.115.11         # API framework
