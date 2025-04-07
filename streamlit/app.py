@@ -5,7 +5,9 @@ import numpy as np
 from PIL import Image
 from pathlib import Path
 import pandas as pd
-import nltk
+import os
+from io import BytesIO
+import base64
 
 page_bg = """
 <style>
@@ -81,30 +83,39 @@ page_bg = """
 </style>
 """
 
-st.markdown(page_bg, unsafe_allow_html=True)
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+STATIC_DIR = os.path.join(BASE_DIR, "static", "media")
 
+try:
+    image_human = Image.open(os.path.join(STATIC_DIR, "human.png"))
+    image_ai = Image.open(os.path.join(STATIC_DIR, "robot.png"))
+    # st.write("Loaded image_human:", image_human)
+    # st.write("Loaded image_ai:", image_ai)
+    image_human = image_human
+    image_ai = image_ai
+
+except Exception as e:
+    st.error(f"Error loading result images: {e}")
+
+
+def display_image_inline(img):
+    buf = BytesIO()
+    img.save(buf, format="PNG")
+    data = base64.b64encode(buf.getvalue()).decode("utf-8")
+    st.markdown(f'<img src="data:image/png;base64,{data}" width="400"/>', unsafe_allow_html=True)
+
+st.title("GAIDI - GenAI Data Identificator")
+st.markdown(page_bg, unsafe_allow_html=True)
 
 # Load models
 text_preprocessing = joblib.load("roma_models/pipeline.joblib")
 model_texts = joblib.load("roma_models/stacking_text_model.joblib")
 model_images = tf.keras.models.load_model("roma_models/image_model.keras")
 
-def load_image(image_name):
-    current_dir = Path(__file__).parent  
-    image_path = current_dir / "static/media" / image_name
-    return Image.open(image_path)
-
-# Load images 
-image_human = load_image("human.png")
-image_ai = load_image("robot.png")
-
-st.title("GAIDI - GenAI Data Identificator")
-
-
 st.header("📝 Text Analysis")
 text_input = st.text_area("Enter English text for prediction")
 
-if st.button("Analyze Text",key="text_analyze"):
+if st.button("Analyze Text", key="text_analyze"):
     if not text_input.strip():
         st.error("No text provided.")
     elif len(text_input.split()) < 6:
@@ -125,31 +136,48 @@ if st.button("Analyze Text",key="text_analyze"):
             st.error(f"Unexpected prediction shape: {prediction.shape}")
             pred_val = 0
 
-        label = "YOU WROTE IT!" if pred_val <= 0.5 else "GENAI WROTE THAT TEXT!"    # Text DATA => 0 : HUMAN   1 : AI Generated
+        label = "YOU WROTE IT!" if pred_val <= 0.5 else "GENAI WROTE THAT TEXT!"
         confidence = round(float(pred_val if pred_val >= 0.5 else 1 - pred_val) * 100)
 
         st.success(f"RESULT: {label} \n With confidence {confidence}%")
-        st.image(image_human if pred_val <= 0.5 else image_ai, width=400)
+        display_image_inline(image_human if pred_val <= 0.5 else image_ai)
 
 
 st.header("🖼️ Image Analysis")
 uploaded_file = st.file_uploader("Choose an image...", type=["png", "jpg", "jpeg"])
 
 if uploaded_file is not None:
-    with st.spinner("Processing image..."):
-        image = Image.open(uploaded_file).convert('RGB').resize((32, 32))
+    st.write("Uploaded file:", uploaded_file.name)
+    st.write("File type:", uploaded_file.type)
+    st.write("File size (bytes):", uploaded_file.size)
+    
+    # try:
+    #     # Attempt to open and display the uploaded image
+    #     uploaded_image = Image.open(uploaded_file)
+    #     st.image(uploaded_image, caption="Uploaded Image Preview", use_container_width=True)
+    # except Exception as e:
+    #     st.error(f"Error displaying uploaded image: {e}")
+    
+    try:
+        # Preprocess image
+        image = uploaded_image.convert("RGB").resize((32, 32))
         image_array = np.array(image)
         image_batch = np.expand_dims(image_array, axis=0)
-
+        st.write("Image processed; shape:", image_array.shape)
+    except Exception as e:
+        st.error(f"Error preprocessing image: {e}")
+    
     if st.button("Analyze Image", key="image_analyze"):
-        prediction = model_images.predict(image_batch)
-        confidence = float(prediction[0][0])
+        try:
+            prediction = model_images.predict(image_batch)
+            confidence = float(prediction[0][0])
+            label = "It is a REAL picture" if confidence >= 0.5 else "It is AI GENERATED"
+            confidence_score = confidence if label == "It is a REAL picture" else 1 - confidence
+            st.success(f"RESULT: {label} with confidence {round(confidence_score * 100)}%")
+            display_image_inline(image_human if confidence >= 0.5 else image_ai)
 
-        label = "It is a REAL picture" if confidence >= 0.5 else "It is AI GENERATED"   # Image DATA => 1 : HUMAN   0 : AI Generated
-        confidence_score = confidence if label == "It is a REAL picture" else 1 - confidence
-
-        st.success(f"RESULT: {label} with confidence {round(confidence_score *100)}%")
-        st.image(image_human if confidence >= 0.5 else image_ai, width=400)
+        except Exception as e:
+            st.error(f"Error during image analysis: {e}")
 
 st.markdown("---")
 st.markdown("🛠️ Powered by Streamlit | GAIDI | Made with ❤️ by F. Romaric Berger")
