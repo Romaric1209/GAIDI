@@ -5,11 +5,12 @@ import numpy as np
 from PIL import Image
 from pathlib import Path
 import pandas as pd
+import nltk
 
 page_bg = """
 <style>
 [data-testid="stAppViewContainer"] {
-    background-image: url("https://raw.githubusercontent.com/Romaric1209/GAIDI/main/streamlit/img/human_and_robotic_interaction_16031691.jpg");
+    background-image: url("https://raw.githubusercontent.com/Romaric1209/GAIDI/main/streamlit/static/media/human_and_robotic_interaction_16031691.jpg");
     background-size: cover;
 } /*background*/
 
@@ -90,7 +91,7 @@ model_images = tf.keras.models.load_model("roma_models/image_model.keras")
 
 def load_image(image_name):
     current_dir = Path(__file__).parent  
-    image_path = current_dir / "img" / image_name
+    image_path = current_dir / "static/media" / image_name
     return Image.open(image_path)
 
 # Load images 
@@ -101,9 +102,9 @@ st.title("GAIDI - GenAI Data Identificator")
 
 
 st.header("📝 Text Analysis")
-text_input = st.text_area("Enter text for prediction")
+text_input = st.text_area("Enter English text for prediction")
 
-if st.button("Analyze Text"):
+if st.button("Analyze Text",key="text_analyze"):
     if not text_input.strip():
         st.error("No text provided.")
     elif len(text_input.split()) < 6:
@@ -151,4 +152,4 @@ if uploaded_file is not None:
         st.image(image_human if confidence >= 0.5 else image_ai, width=400)
 
 st.markdown("---")
-st.markdown("🛠️ Powered by GAIDI | Made with ❤️ by F. Romaric Berger")
+st.markdown("🛠️ Powered by Streamlit | GAIDI | Made with ❤️ by F. Romaric Berger")

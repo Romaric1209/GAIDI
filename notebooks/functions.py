@@ -2,12 +2,33 @@ import numpy as np
 import string
 import re
 import textstat
+import os
 import nltk
-nltk_data_path = "/home/romaric/code/Romaric1209/GAIDI/notebooks/nltk_data"
-nltk.data.path.append(nltk_data_path)
-from nltk.corpus import cmudict
+from pathlib import Path
+
+current_dir = Path(__file__).parent
+nltk_data_path = current_dir.parent / "notebooks" / "nltk_data"
+
+nltk.data.path += [
+    str(nltk_data_path),  # Local development
+    "/root/nltk_data",    # Docker container
+    nltk.data.path[0]     # Default system path
+]
+
+try:
+    nltk.data.find('corpora/cmudict')
+    nltk.data.find('tokenizers/punkt_tab')
+except LookupError:
+    print("Downloading required NLTK datasets...")
+    nltk.download('cmudict', download_dir=str(nltk_data_path))
+    nltk.download('punkt', download_dir=str(nltk_data_path))
+    nltk.download('stopwords', download_dir=str(nltk_data_path))
+
+from nltk.corpus import cmudict, stopwords
 from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
+
+from nltk.corpus import cmudict, stopwords
+from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from collections import Counter
 from textblob import TextBlob
