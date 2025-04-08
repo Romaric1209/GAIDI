@@ -3,7 +3,6 @@ import joblib
 import tensorflow as tf
 import numpy as np
 from PIL import Image
-from pathlib import Path
 import pandas as pd
 import os
 from io import BytesIO
@@ -147,26 +146,26 @@ st.header("🖼️ Image Analysis")
 uploaded_file = st.file_uploader("Choose an image...", type=["png", "jpg", "jpeg"])
 
 if uploaded_file is not None:
-    st.write("Uploaded file:", uploaded_file.name)
-    st.write("File type:", uploaded_file.type)
-    st.write("File size (bytes):", uploaded_file.size)
-    
-    # try:
-    #     # Attempt to open and display the uploaded image
-    #     uploaded_image = Image.open(uploaded_file)
-    #     st.image(uploaded_image, caption="Uploaded Image Preview", use_container_width=True)
-    # except Exception as e:
-    #     st.error(f"Error displaying uploaded image: {e}")
-    
+    # st.write("File type:", uploaded_file.type)
+    # st.write("File size (bytes):", uploaded_file.size)
+
+    try:
+        # Attempt to open and display the uploaded image
+        uploaded_image = Image.open(uploaded_file)
+        # st.image(uploaded_image, caption="Uploaded Image Preview", use_container_width=True)
+    except Exception as e:
+        st.error(f"Error displaying uploaded image: {e}")
+
     try:
         # Preprocess image
-        image = uploaded_image.convert("RGB").resize((32, 32))
+        image = uploaded_image.resize((32, 32))
+        image = image.convert("RGB")
         image_array = np.array(image)
         image_batch = np.expand_dims(image_array, axis=0)
         st.write("Image processed; shape:", image_array.shape)
     except Exception as e:
         st.error(f"Error preprocessing image: {e}")
-    
+
     if st.button("Analyze Image", key="image_analyze"):
         try:
             prediction = model_images.predict(image_batch)
