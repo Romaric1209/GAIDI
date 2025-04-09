@@ -162,7 +162,7 @@ if uploaded_file is not None:
         image = image.convert("RGB")
         image_array = np.array(image)
         image_batch = np.expand_dims(image_array, axis=0)
-        st.write("Image processed; shape:", image_array.shape)
+        # st.write("Image processed; shape:", image_array.shape)
     except Exception as e:
         st.error(f"Error preprocessing image: {e}")
 
