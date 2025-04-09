@@ -76,7 +76,7 @@ feature_names = [
     "word_count", "reading_ease", "gunning_fog"
 ]
 
-X = pd.read_csv(r"data/texts_data/5k_sampled_dataset.csv")
+X = pd.read_csv(r"data/texts_data/10k_sampled_dataset.csv")
 pipeline.fit(X)
 
 # Check TF-IDF

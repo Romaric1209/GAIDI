@@ -23,6 +23,8 @@ except LookupError:
     nltk.download('cmudict', download_dir=str(nltk_data_path))
     nltk.download('punkt', download_dir=str(nltk_data_path))
     nltk.download('stopwords', download_dir=str(nltk_data_path))
+    nltk.download('punkt_tab', download_dir=str(nltk_data_path))
+    nltk.download('wordnet', download_dir=str(nltk_data_path))
 
 from nltk.corpus import cmudict, stopwords
 from nltk.tokenize import word_tokenize

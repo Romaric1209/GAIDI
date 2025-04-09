@@ -4,10 +4,10 @@ FROM python:3.10-slim-buster AS builder
 WORKDIR /app
 
 # Install necessary build dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    gcc g++ libopenblas-dev && \
-    rm -rf /var/lib/apt/lists/*
+# RUN apt-get update && \
+#     apt-get install -y --no-install-recommends \
+#     gcc g++ libopenblas-dev && \
+#     rm -rf /var/lib/apt/lists/*
 
 # Copy requirements.txt and install dependencies
 COPY requirements.txt ./
@@ -35,7 +35,7 @@ WORKDIR /app
 COPY --from=builder /root/.local /root/.local
 
 # Copy source files and models
-COPY notebooks/ ./notebooks/
+COPY notebooks/functions.py notebooks/transformers.py notebooks/pipeline.py ./notebooks/
 COPY roma_models/stacking_text_model.joblib roma_models/pipeline.joblib roma_models/image_model.keras ./roma_models/
 RUN ls -lah /app/roma_models/
 COPY --chmod=755 streamlit/ ./streamlit/
@@ -52,9 +52,6 @@ RUN apt-get update && \
 RUN rm -rf /root/nltk_data && \
     python -m nltk.downloader cmudict stopwords wordnet punkt punkt_tab
 
-
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
 
 # Expose the Streamlit port
 EXPOSE 8080
