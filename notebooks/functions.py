@@ -28,9 +28,6 @@ except LookupError:
 
 from nltk.corpus import cmudict, stopwords
 from nltk.tokenize import word_tokenize
-
-from nltk.corpus import cmudict, stopwords
-from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from collections import Counter
 from textblob import TextBlob

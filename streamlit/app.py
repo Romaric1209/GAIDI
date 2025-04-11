@@ -170,7 +170,7 @@ if uploaded_file is not None:
         try:
             prediction = model_images.predict(image_batch)
             confidence = float(prediction[0][0])
-            label = "It is a REAL picture" if confidence >= 0.5 else "It is AI GENERATED"
+            label = "REAL! It is NOT AI GENERATED " if confidence >= 0.5 else "FAKE, It is AI GENERATED"
             confidence_score = confidence if label == "It is a REAL picture" else 1 - confidence
             st.success(f"RESULT: {label} with confidence {round(confidence_score * 100)}%")
             display_image_inline(image_human if confidence >= 0.5 else image_ai)
