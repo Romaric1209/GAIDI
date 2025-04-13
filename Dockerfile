@@ -25,7 +25,6 @@ FROM python:3.10-slim-buster
 
 # Set environment variables
 ENV PATH="/root/.local/bin:$PATH"
-ENV NLTK_DATA=/root/nltk_data
 ENV PYTHONPATH="/app/notebooks:/app"
 
 # Set working directory
@@ -36,7 +35,7 @@ COPY --from=builder /root/.local /root/.local
 
 # Copy source files and models
 COPY notebooks/functions.py notebooks/transformers.py notebooks/pipeline.py ./notebooks/
-COPY roma_models/stacking_text_model.joblib roma_models/pipeline.joblib roma_models/image_model.keras ./roma_models/
+COPY models/svm_model.joblib models/pipeline.joblib models/image_model.keras ./models/
 RUN ls -lah /app/roma_models/
 COPY --chmod=755 streamlit/ ./streamlit/
 RUN chown -R www-data:www-data /app/streamlit/static
