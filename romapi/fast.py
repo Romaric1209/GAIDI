@@ -1,9 +1,9 @@
 import uvicorn
 import os
 from fastapi import FastAPI, HTTPException, File, UploadFile
-from notebooks.transformers import (
-    InputHandler, HowManyWords, TextPreprocessor, ConsDensity, Stress, Sentiment, Redundance,
-    UnusualWord, Coherence, ReadingEase, GunningFog, LogTransform, Tfidf_Vectorizer
+from notebooks.text_transformers import (
+    InputHandler, TextPreprocessor, SpacyPreprocessor, SpacyTfidfVectorizer, 
+    Redundance, SentimentAnalyzer, ReadingEase, GunningFog
 )
 from pydantic import BaseModel
 import tensorflow as tf

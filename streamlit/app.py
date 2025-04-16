@@ -107,9 +107,9 @@ st.title("GAIDI - GenAI Data Identificator")
 st.markdown(page_bg, unsafe_allow_html=True)
 
 # Load models
-text_preprocessing = joblib.load("roma_models/pipeline.joblib")
-model_texts = joblib.load("roma_models/stacking_text_model.joblib")
-model_images = tf.keras.models.load_model("roma_models/image_model.keras")
+text_preprocessing = joblib.load("models/pipeline.joblib")
+model_texts = joblib.load("models/models.joblib")
+model_images = tf.keras.models.load_model("models/image_model.keras")
 
 st.header("📝 Text Analysis")
 text_input = st.text_area("Enter English text for prediction")

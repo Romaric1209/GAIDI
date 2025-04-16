@@ -6,7 +6,7 @@ from scipy.sparse import isspmatrix, csr_matrix
 from catboost import CatBoostClassifier
 from functions import nlp
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from functions import (
+from notebooks.functions import (
     basic_cleaning, spacy_preprocessor, redundance,
     reading_ease, gunning_fog
 )
