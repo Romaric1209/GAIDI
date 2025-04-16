@@ -2,13 +2,10 @@ pandas==2.2.3
 numpy==1.26.0
 textstat==0.7.5
 tensorflow-cpu==2.18.0
-matplotlib==3.10.0
 scikit-learn==1.6.1
 scipy==1.13.1
-Flask==2.2.5
-syllapy==0.7.2
-xgboost==2.1.4
 catboost==1.2.7
+xgboost==2.1.4
 lightgbm==4.6.0
 spacy==3.6.0
 en-core-web-sm==3.6.0
@@ -21,6 +18,3 @@ python-multipart==0.0.20
 streamlit==1.44.1
 
 
-# tests
-httpx==0.28.1          # HTTP client
-pytest-asyncio==0.25.3 # asynchronous I/O support for pytest

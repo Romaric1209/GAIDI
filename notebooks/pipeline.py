@@ -3,7 +3,7 @@ import joblib
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.preprocessing import MinMaxScaler, MaxAbsScaler
 from sklearn.utils.validation import check_is_fitted
-from text_transformers import (
+from notebooks.text_transformers import (
     InputHandler, TextPreprocessor, SpacyPreprocessor, SpacyTfidfVectorizer, 
     Redundance, SentimentAnalyzer, ReadingEase, GunningFog
 )
