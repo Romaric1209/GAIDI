@@ -1,20 +1,13 @@
+# Core dependencies
 pandas==2.2.3
 numpy==1.26.0
-textstat==0.7.5
+textstat==0.7.3
 tensorflow-cpu==2.18.0
-scikit-learn==1.6.1
+scikit-learn==1.4.0  
 scipy==1.13.1
-catboost==1.2.7
-xgboost==2.1.4
-lightgbm==4.6.0
-spacy==3.6.0
-en-core-web-sm==3.6.0
+spacy==3.7.4 
+https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.0/en_core_web_sm-3.7.0-py3-none-any.whl
 vaderSentiment==3.3.2
-
-# API
-fastapi==0.115.11         # API framework
-uvicorn==0.34.0        # web server
-python-multipart==0.0.20
-streamlit==1.44.1
+streamlit==1.32.2  
 
 
