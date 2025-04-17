@@ -81,6 +81,7 @@ page_bg = """
 } /* Fog*/
 </style>
 """
+st.markdown(page_bg, unsafe_allow_html=True)
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static", "media")
@@ -104,12 +105,11 @@ def display_image_inline(img):
     st.markdown(f'<img src="data:image/png;base64,{data}" width="400"/>', unsafe_allow_html=True)
 
 st.title("GAIDI - GenAI Data Identificator")
-st.markdown(page_bg, unsafe_allow_html=True)
 
 # Load models
-text_preprocessing = joblib.load("models/pipeline.joblib")
-model_texts = joblib.load("models/models.joblib")
-model_images = tf.keras.models.load_model("models/image_model.keras")
+text_preprocessing = joblib.load("streamlit/models/pipeline.joblib")
+model_texts = joblib.load("streamlit/models/svm_model.joblib")
+model_images = tf.keras.models.load_model("streamlit/models/image_model.keras")
 
 st.header("📝 Text Analysis")
 text_input = st.text_area("Enter English text for prediction")
@@ -117,8 +117,6 @@ text_input = st.text_area("Enter English text for prediction")
 if st.button("Analyze Text", key="text_analyze"):
     if not text_input.strip():
         st.error("No text provided.")
-    elif len(text_input.split()) < 6:
-        st.warning("Warning: Text too short!")
     else:
         input_df = pd.DataFrame({"text": [text_input]})
         preprocessed_input = text_preprocessing.transform(input_df)
