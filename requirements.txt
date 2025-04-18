@@ -6,8 +6,8 @@ tensorflow-cpu==2.18.0
 scikit-learn==1.4.0  
 scipy==1.13.1
 spacy==3.7.4 
-https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.0/en_core_web_sm-3.7.0-py3-none-any.whl
+en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.0/en_core_web_sm-3.7.0-py3-none-any.whl
 vaderSentiment==3.3.2
-streamlit==1.32.2  
+streamlit==1.44.1 
 
 
