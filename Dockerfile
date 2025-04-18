@@ -28,5 +28,8 @@ ENV PYTHONPATH="/app/streamlit/notebooks"
 EXPOSE 8080
 
 CMD ["streamlit", "run", "streamlit/app.py", \
-    "--server.port=8080", \
-    "--server.address=0.0.0.0"]
+     "--server.port=8080", \
+     "--server.address=0.0.0.0", \
+     "--server.enableCORS=false", \
+     "--server.enableXsrfProtection=false", \
+     "--server.headless=true"]

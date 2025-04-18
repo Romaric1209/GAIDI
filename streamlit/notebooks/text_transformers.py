@@ -1,7 +1,6 @@
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction.text import TfidfVectorizer
-from functions import nlp
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from notebooks.functions import *
     
