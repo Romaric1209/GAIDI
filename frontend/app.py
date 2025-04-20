@@ -107,9 +107,9 @@ def display_image_inline(img):
 st.title("GAIDI - GenAI Data Identificator")
 
 # Load models
-text_preprocessing = joblib.load("frontend/models/pipeline.joblib")
-model_texts = joblib.load("frontend/models/svm_model.joblib")
-model_images = tf.keras.models.load_model("frontend/models/image_model.keras")
+text_preprocessing = joblib.load("models/pipeline.joblib")
+model_texts = joblib.load("models/svm_model.joblib")
+model_images = tf.keras.models.load_model("models/image_model.keras")
 
 st.header("📝 Text Analysis")
 text_input = st.text_area("Enter English text for prediction")
