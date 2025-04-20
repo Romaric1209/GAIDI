@@ -1,13 +1,21 @@
-# setup.py
-from setuptools import setup
-from setuptools import find_packages
+from setuptools import setup, find_packages
 
-# list dependencies from file
+# Read dependencies from requirements.txt
 with open('requirements.txt') as f:
-		content = f.readlines()
-requirements = [x.strip() for x in content]
+    requirements = [line.strip() for line in f.readlines()]
 
-setup(name='romapp',
-			description="packages for my own version of LeWagon project",
-			packages=find_packages(),
-			install_requires=requirements)
+setup(
+    name='romapp',
+    version='0.2.0',  
+    description="My custom version of LeWagon project",
+    long_description=open('README.md').read(), 
+    long_description_content_type='text/markdown',
+    url="https://github.com/Romaric1209/GAIDI", 
+    author="Romaric",
+    author_email="romaric.berger@gmail.com",
+    packages=find_packages(), 
+    install_requires=requirements,
+    python_requires='>=3.7,<3.11',
+    include_package_data=True,  
+    zip_safe=False, 
+)
