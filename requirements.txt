@@ -7,7 +7,7 @@ scikit-learn>=1.4.0,<2.0
 scipy>=1.13.1,<2.0
 spacy>=3.7.4,<4.0
 vaderSentiment>=3.3.2,<4.0
-streamlit>=1.32.2,<2.0
+streamlit>=1.44.1,<2.0
 
 
 en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.0/en_core_web_sm-3.7.0-py3-none-any.whl

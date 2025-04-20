@@ -11,7 +11,7 @@ import base64
 page_bg = """
 <style>
 [data-testid="stAppViewContainer"] {
-    background-image: url("https://raw.githubusercontent.com/Romaric1209/GAIDI/main/streamlit/static/media/human_and_robotic_interaction_16031691.jpg");
+    background-image: url("https://raw.githubusercontent.com/Romaric1209/GAIDI/refs/heads/main/frontend/static/media/human_and_robotic_interaction_16031691.jpg");
     background-size: cover;
 } /*background*/
 
@@ -144,13 +144,9 @@ st.header("🖼️ Image Analysis")
 uploaded_file = st.file_uploader("Choose an image...", type=["png", "jpg", "jpeg"])
 
 if uploaded_file is not None:
-    # st.write("File type:", uploaded_file.type)
-    # st.write("File size (bytes):", uploaded_file.size)
 
     try:
-        # Attempt to open and display the uploaded image
         uploaded_image = Image.open(uploaded_file)
-        # st.image(uploaded_image, caption="Uploaded Image Preview", use_container_width=True)
     except Exception as e:
         st.error(f"Error displaying uploaded image: {e}")
 
@@ -160,7 +156,6 @@ if uploaded_file is not None:
         image = image.convert("RGB")
         image_array = np.array(image)
         image_batch = np.expand_dims(image_array, axis=0)
-        # st.write("Image processed; shape:", image_array.shape)
     except Exception as e:
         st.error(f"Error preprocessing image: {e}")
 
@@ -168,8 +163,8 @@ if uploaded_file is not None:
         try:
             prediction = model_images.predict(image_batch)
             confidence = float(prediction[0][0])
-            label = "REAL! It is NOT AI GENERATED " if confidence >= 0.5 else "FAKE, It is AI GENERATED"
-            confidence_score = confidence if label == "It is a REAL picture" else 1 - confidence
+            label = "REAL! It is NOT AI GENERATED" if confidence >= 0.5 else "FAKE, It is AI GENERATED"
+            confidence_score = confidence if label == "REAL! It is NOT AI GENERATED" else 1 - confidence
             st.success(f"RESULT: {label} with confidence {round(confidence_score * 100)}%")
             display_image_inline(image_human if confidence >= 0.5 else image_ai)
 
