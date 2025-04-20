@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: gaidi
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "streamlit run frontend/app.py --server.port $PORT --server.address 0.0.0.0"
+    plan: free
